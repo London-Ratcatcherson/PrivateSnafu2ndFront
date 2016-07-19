@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
+using Windows.ApplicationModel.Resources.Core;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
@@ -22,15 +23,19 @@ namespace PrivateSnafu2ndFront
     /// </summary>
     sealed partial class App : Application
     {
+
         /// <summary>
         /// Initializes the singleton application object.  This is the first line of authored code
         /// executed, and as such is the logical equivalent of main() or WinMain().
         /// </summary>
         public App()
         {
+            Microsoft.ApplicationInsights.WindowsAppInitializer.InitializeAsync(
+                Microsoft.ApplicationInsights.WindowsCollectors.Metadata |
+                Microsoft.ApplicationInsights.WindowsCollectors.Session);
             this.InitializeComponent();
             this.Suspending += OnSuspending;
-        }
+         }
 
         /// <summary>
         /// Invoked when the application is launched normally by the end user.  Other entry points
@@ -47,8 +52,24 @@ namespace PrivateSnafu2ndFront
 #endif
             Frame rootFrame = Window.Current.Content as Frame;
 
+            // Get the languages at start
+            // Save the very first language in the langList
+            // When we cycle through languages, we can return to that
+            var ctx = ResourceContext.GetForCurrentView();
+            langList[0] = ctx.Languages[0].ToString();
+
+            // Get a list of all the languages available for debugging
+            {
+                int n = ctx.Languages.Count();
+                allLangs = new string[n];
+                for (int i = 0; i != n; i++)
+                {
+                    allLangs[i] = ctx.Languages[i].ToString();
+                }
+            }
+
             // Do not repeat app initialization when the Window already has content,
-            // just ensure that the window is active
+            //   just ensure that the window is active
             if (rootFrame == null)
             {
                 // Create a Frame to act as the navigation context and navigate to the first page
@@ -101,6 +122,31 @@ namespace PrivateSnafu2ndFront
             var deferral = e.SuspendingOperation.GetDeferral();
             //TODO: Save application state and stop any background activity
             deferral.Complete();
+        }
+
+        /// <summary>
+        /// The App gets the languages used by the client 
+        ///   and handles walking through the "supported languages" list
+        ///   exposed through the "Secret Button"
+        /// </summary>
+        // Supported languages and currently selected index 
+        //   (0 = lang at start, 1 is first lang we support)
+        static private int langIndex = 1;
+        static private string[] langList = { "", "EN", "ES" };
+        static private string[] allLangs;
+
+        // Return the current language string
+        static public string getCurrentLanguage()
+        {
+            return langList[langIndex];
+        }
+        // Advance index to next language string
+        static public void setNextLanguage()
+        {
+            if (++langIndex == langList.Count())
+            {
+                langIndex = 0;
+            }
         }
     }
 }

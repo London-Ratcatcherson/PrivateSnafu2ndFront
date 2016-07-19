@@ -1,0 +1,71 @@
+﻿<Page
+    x:Class="PrivateSnafu2ndFront.PlayerPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:PrivateSnafu2ndFront"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+  
+    <!-- Win 8 used a "TopAppBar", Win 10 uses a "CommandBar" -->
+    <!-- Our bar has a TextBlock (brief usage instructions), a Home button, and some media controls -->
+    <!-- UI guide suggests the CommandBar be on the bottom, but that's where the ProgressBar is   -->
+    <Page.TopAppBar>
+        <CommandBar x:Name="topCommandBar" IsOpen="True">
+            <CommandBar.Content>
+                <TextBlock x:Name="commandContentText" />
+            </CommandBar.Content>
+
+            <AppBarButton x:Name="Home" Icon="Home" Click="Home_Click" />
+            <AppBarButton x:Name="FullScreenToggle" Icon="FullScreen" Click="FullScreenToggle_Click" />
+            <AppBarButton x:Name="Vol_Softer"       Icon="Volume"     Click="VolumeDown_Click"/>
+            <AppBarButton x:Name="Vol_Louder"       Icon="Volume"     Click="VolumeUp_Click"/>
+
+        </CommandBar>
+    </Page.TopAppBar>
+
+    <!-- The BottomAppBar has more Media controls, plus the Slider/ProgressBar, -->
+    <!--   which is not supported in the CommandBar -->
+    <Page.BottomAppBar>
+        <AppBar x:Name="bottomAppBar" IsOpen="True">
+            <Grid x:Name="PlayerPage_MainGrid" >
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="5*" />
+                </Grid.ColumnDefinitions>
+                <StackPanel x:Name="MediaControls_Play" Orientation="Horizontal"  Grid.Column="1">
+                    <AppBarButton x:Name="Previous" Icon="Previous"  Click="Reverse_Click"/>
+                    <AppBarButton x:Name="Play"     Icon="Play"      Click="Play_Click"/>
+                    <AppBarButton x:Name="Pause"    Icon="Pause"     Click="Pause_Click"/>
+                    <AppBarButton x:Name="Stop"     Icon="Stop"      Click="Stop_Click"/>
+                    <AppBarButton x:Name="Next"     Icon="Next"      Click="Forward_Click"/>
+                    <Slider       x:Name="timelineSlider"  Margin="10,0" Width="200"  />
+                </StackPanel>
+            </Grid>
+        </AppBar>
+    </Page.BottomAppBar>
+
+    <!-- The movie playback Grid has a single ContentControl which holds a MediaElement to play the movie -->
+    <!-- There is a nice "Official Film War Department" bitmap as the poster while the movie is loading -->
+    <Grid x:Name="grid_BigScreen" Background="{StaticResource ApplicationPageBackgroundThemeBrush}"
+          KeyDown="grid_BigScreen_KeyDown"
+          KeyUp="grid_BigScreen_KeyUp">
+        
+        <ContentControl x:Name="videoContainer"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center" />
+
+        <MediaElement x:Name="videoMediaElement"
+                      MediaOpened="videoElement_MediaOpened"
+                      MediaEnded="videoMediaElement_MediaEnded"
+                      MediaFailed="videoMediaElement_MediaFailed"
+                      CurrentStateChanged="videoMediaElement_CurrentStateChanged"
+                      PosterSource="assets/OfficialFilm_WarDepartment500x346.jpg"
+                      AutoPlay="True" />
+        <ContentControl/>
+    </Grid>
+
+</Page>
