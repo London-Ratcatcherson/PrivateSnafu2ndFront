@@ -4,10 +4,12 @@
 UWP release of Private Snafu
 
 Building the Clean Copy of Private Snafu for the release
+
 The first "Private Snafu" Windows Store app was written by me (Percy Tierney) in 2012 while I was learning to write Windows RT / Store apps for Windows RT / 8. That app was reasonably successful, with over a thousand downloads and not one single public crash. 
 Since then, Windows has moved on to Windows 10 and now recommends the Universal Windows Platform (UWP) API. Instead of simply updating the current Private Snafu, I decided to write a new version for UWP from scratch. The new version leverages about half the code from the old RT version, and includes new features, primarily using JSON for data and adding multi-language support. 
 
 Beginnings
+
 We want a minty fresh, clean UWP app. Start Visual Studio 15 “Community” and create a new project from the Template, “Visual C#, Windows, Universal, Blank App (Universal Windows)”. This gives us a basic one page app. 
 Go into Assets and replace the placeholder art with the real art.
 
@@ -24,6 +26,7 @@ Check that there are no “Red Cross” error flags.
 Reference: https://msdn.microsoft.com/en-us/windows/uwp/controls-and-patterns/tiles-and-notifications-app-assets
 
 Finish the manifest
+
 In the manifest “Application” tab, set your “Display Name” (ex, “PrivateSnafu2ndFront”), “Default Language” (“en-us”, or English in the USA), additional language (“es”, or Spanish (Espanol)) and “Description” (“Private Snafu – the 2nd Front”). 
 
 In the “Capabilities” tab, ensure “Internet (Client)” is picked. 
@@ -32,12 +35,15 @@ In the “Packaging” tab, check the Package and Publisher Display Names, and t
 That completes the Manifest.
 
 Add the Strings
+
 Right click “Solution Explorer”, add “New Folder”, and create “Strings”. Make an “en-US” and “es” folder. Copy the respect language string resources into these. The "en-us" is the default Culture – English in the United States. The "es" is a supported Culture – Spanish anywhere. You can reference these ISO Language code tables here: http://www.lingoes.net/en/translator/langcode.htm
 
 First Build
+
 UWP apps can be built for ARM, x86 and x64. The “All Platforms” build is not supported for Windows 10 Store apps. Build the app and check that the Logos show up in the “All Apps” menu, on the TaskBar, and that you see your splash screen when the app starts up.
 
 Add the Styles Dictionary
+
 From “Solution Explorer”, add the existing item “Styles Dictionary”. Open “App.xaml” and add the <Application.Resources> section including the “StylesDictionary.xaml”. In “StylesDictionary.xaml” update the “using:” section to “using:PrivateSnafu2ndFront”. These are the app global Style definitions for the movie data title, text, graphics and error messages.
 
 Add MovieData.cs to the project, and update the namespace to be the current project. This is an object that describes the movie data (title, text, image and movie location).
@@ -66,6 +72,7 @@ Set the properties to “Content” and “Copy Always”.
 On the MainPage.xaml, set the MainPage_Grid ImageSource to a new, clear Snafu image.
 
 Advertising
+
 The original RT advertising API is no longer supported.
 
 Close Visual Studio and uninstall ALL previous instances of the Microsoft Advertising or “Store Monetization and Engagement SDK”. The latest version is here:
@@ -77,6 +84,7 @@ The setup is very fussy. You need to use test values for the ApplicationId and A
 My Private Snafu webpage is http://FrostBackCrow.com/Fun. Here's the main text for the "About". You will need a separate link for each language you want to support. "PS2" has two languages, so it includes English and Spanish "About" pages.
 
 "About Private Snafu" web site text
+
 " On December 7, 1941, the USA was unexpectedly plunged into the middle of World War II. There was a lot of panic, confusion and plumb dumb goofs made right from the beginning. 
 
 Hollywood to the rescue! The “Office of War Information” was set up to educate and influence the general public using whatever they could get their hands on – newspapers, magazines, radio and even comic books. Under the leadership of Brigadier General Frederick Osborn, movies were picked as the best medium, and the enlisted Service men and women as the best target. These new recruits were fresh and full of spirit, but they came from all walks of society, from field hands who could barely read to Captains of Industry used to command. 
